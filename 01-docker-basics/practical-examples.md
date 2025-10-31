@@ -297,8 +297,13 @@ _Add observations, questions, and discoveries here:_
 - 
 
 **Tricks I discovered:**
-- 
-- 
+Remove all containers:
+
+    docker container ls -aq | xargs docker container rm
+
+Remove all images:
+
+    docker image ls -aq | xargs docker rmi - 
 
 ---
 
