@@ -7,7 +7,10 @@ A consolidated cheat sheet of the most commonly used Docker commands and pattern
 ## Container Lifecycle
 
 ```bash
-# Create container
+# Search for images
+docker search IMAGE_NAME
+
+# Create container (doesn't start it)
 docker create --name NAME IMAGE
 
 # Start container
@@ -19,8 +22,11 @@ docker stop NAME
 # Remove container
 docker rm NAME
 
-# Run (create + start)
+# Run (create + start + attach in one command)
 docker run --name NAME IMAGE
+
+# Run with auto-cleanup
+docker run --rm IMAGE
 ```
 
 ## Most Used Commands
@@ -45,6 +51,37 @@ docker logs -f NAME  # follow
 
 # Execute command in running container
 docker exec -it NAME /bin/sh
+
+# Attach to running container
+docker attach NAME
+```
+
+## Essential Flags
+
+```bash
+# Interactive terminal
+-it              # Use for shells: docker run -it ubuntu bash
+
+# Background/detached
+-d               # Use for services: docker run -d nginx
+
+# Auto-remove when stopped
+--rm             # Use for temporary: docker run --rm ubuntu
+
+# Port mapping
+-p HOST:CONTAINER   # Example: docker run -p 8080:80 nginx
+
+# Volume mounting
+-v HOST:CONTAINER   # Example: docker run -v $(pwd):/app myapp
+
+# Environment variables
+-e KEY=VALUE     # Example: docker run -e DEBUG=true myapp
+
+# Run as user (not root)
+--user UID:GID   # Example: docker run --user 1000:1000 myapp
+
+# Name the container
+--name NAME      # Example: docker run --name web nginx
 ```
 
 ## Security Quick Wins
@@ -81,6 +118,18 @@ docker system df
 
 ## Common Patterns
 
+### Quick Interactive Shell
+```bash
+# Ubuntu
+docker run --rm -it ubuntu bash
+
+# Alpine (smaller)
+docker run --rm -it alpine sh
+
+# Python REPL
+docker run --rm -it python:3.11-alpine python
+```
+
 ### Web Server with Port Mapping
 ```bash
 docker run -d \
@@ -89,7 +138,16 @@ docker run -d \
   nginx:1.25-alpine
 ```
 
-### Interactive Container
+### Interactive Development Container
+```bash
+docker run -it \
+  --name dev \
+  -v $(pwd):/app \
+  -w /app \
+  ubuntu bash
+```
+
+### Temporary Container (Auto-Remove)
 ```bash
 docker run -it \
   --rm \
@@ -105,6 +163,44 @@ docker run -d \
   -e DATABASE_URL="postgres://localhost/db" \
   -e DEBUG="false" \
   myapp:latest
+```
+
+### Persistent Named Container
+```bash
+# Create it
+docker run --name myapp -it ubuntu bash
+
+# Exit but don't remove
+exit
+
+# Come back later
+docker start myapp
+docker attach myapp
+```
+
+---
+
+## Real Command Sequences
+
+### First Time Setup
+```bash
+docker search ubuntu         # Find image
+docker pull ubuntu          # Download (optional - run does this)
+docker run -it ubuntu bash  # Create and start
+```
+
+### Working with a Container
+```bash
+docker ps                   # Is it running?
+docker logs NAME           # What happened?
+docker stop NAME           # Stop it
+docker start NAME          # Start again
+docker rm NAME             # Remove it
+```
+
+### Quick Testing
+```bash
+docker run --rm -it ubuntu bash   # Use and auto-delete
 ```
 
 ---

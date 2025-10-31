@@ -321,6 +321,106 @@ docker container ls --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"
 
 ---
 
+### `docker run`
+
+**Purpose:** Creates AND starts a container in one command (combines `create` + `start` + `attach`).
+
+**Syntax:**
+```bash
+docker run [OPTIONS] IMAGE [COMMAND] [ARG...]
+```
+
+**Common Options:**
+- `--name` - Assign a name to the container
+- `-i` or `--interactive` - Keep STDIN open (for interactive use)
+- `-t` or `--tty` - Allocate a pseudo-TTY (terminal)
+- `-d` or `--detach` - Run container in background
+- `-p` - Publish container ports to host
+- `-v` - Mount volumes
+- `-e` or `--env` - Set environment variables
+- `--rm` - Automatically remove container when it exits
+- `--read-only` - Mount container's root filesystem as read-only (security)
+- `--user` - Set username or UID (security)
+
+**Examples:**
+```bash
+# Run interactive Ubuntu container
+docker run --name=bar -it ubuntu bash
+
+# Run nginx in background
+docker run -d --name web -p 8080:80 nginx:1.25-alpine
+
+# Run temporary container (auto-removes when stopped)
+docker run --rm -it python:3.11-alpine python
+
+# Run with environment variable
+docker run -d --name app -e DATABASE_URL=postgres://db:5432 myapp:latest
+
+# Run as non-root user
+docker run --user 1000:1000 --name secure-app myapp:latest
+```
+
+**Important:**
+- `docker run` is the most commonly used command
+- Use `-d` for services that run in background (web servers, databases)
+- Use `-it` for interactive sessions (shells, REPLs)
+- Use `--rm` for temporary containers you don't need to keep
+- Combines three operations: `create` → `start` → `attach` (if `-it`)
+
+**Detaching from Interactive Containers:**
+- `Ctrl+P` then `Ctrl+Q` - Detach without stopping the container
+- `exit` or `Ctrl+D` or `Ctrl+C` - Exit and stop the container
+
+**Security Notes:**
+- Always use `--user` to avoid running as root
+- Use `--rm` for temporary containers to ensure cleanup
+- Combine with `--read-only` when container doesn't need write access
+
+---
+
+### `docker search`
+
+**Purpose:** Search for images on Docker Hub (or configured registry).
+
+**Syntax:**
+```bash
+docker search [OPTIONS] TERM
+```
+
+**Common Options:**
+- `--filter` or `-f` - Filter results (e.g., stars, is-official)
+- `--limit` - Max number of results (default 25)
+- `--no-trunc` - Don't truncate output
+
+**Examples:**
+```bash
+# Search for Ubuntu images
+docker search ubuntu
+
+# Search for official images only
+docker search --filter is-official=true ubuntu
+
+# Search for images with at least 100 stars
+docker search --filter stars=100 nginx
+
+# Search and limit results
+docker search --limit 5 python
+```
+
+**Notes:**
+- Shows image name, description, stars, official status, and automated build status
+- Official images are maintained by Docker or the software vendor
+- Higher star count generally indicates more popular/trusted images
+- Always verify the publisher before pulling images
+
+**Security Notes:**
+- Only use official images or verified publishers when possible
+- Check the number of stars and downloads as indicators of trustworthiness
+- Be cautious of images with similar names to popular images (typosquatting)
+- Review the image's Dockerfile and source code when available
+
+---
+
 ## Common Workflow Example
 
 ```bash
