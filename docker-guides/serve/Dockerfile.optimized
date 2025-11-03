@@ -1,0 +1,19 @@
+# Optimized Dockerfile for serve project
+# Save this as Dockerfile.optimized to compare
+
+FROM node:18-alpine
+
+# Set working directory
+WORKDIR /app
+
+# Install serve globally
+RUN npm install -g serve
+
+# Copy display folder
+COPY ./display ./display
+
+# Switch to non-root user
+USER node
+
+# Use exec form for CMD
+CMD ["serve", "./display"]

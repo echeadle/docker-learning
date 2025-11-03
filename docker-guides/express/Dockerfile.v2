@@ -1,0 +1,21 @@
+# Dockerfile.v2 - Optimized for caching
+# Build: docker build -f Dockerfile.v2 -t express-app:v2 .
+
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Copy package.json FIRST (for better caching)
+COPY package.json .
+
+# Install dependencies (only reruns if package.json changes)
+RUN npm install
+
+# Copy rest of application
+COPY . .
+
+# Use non-root user
+USER node
+
+# Start application
+CMD ["node", "server.js"]

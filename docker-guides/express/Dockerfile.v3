@@ -1,0 +1,33 @@
+# Dockerfile.v3 - Production ready
+# Build: docker build -f Dockerfile.v3 -t express-app:v3 .
+
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install ONLY production dependencies
+RUN npm ci --only=production && \
+    npm cache clean --force
+
+# Copy application
+COPY server.js .
+
+# Create non-root user and switch
+RUN addgroup -g 1001 appgroup && \
+    adduser -D -u 1001 -G appgroup appuser && \
+    chown -R appuser:appgroup /app
+
+USER appuser
+
+# Expose port (documentation)
+EXPOSE 80
+
+# Health check (optional but good practice)
+HEALTHCHECK --interval=30s --timeout=3s \
+  CMD node -e "require('http').get('http://localhost:80', (r) => r.statusCode === 200 ? process.exit(0) : process.exit(1))"
+
+# Start application
+CMD ["node", "server.js"]

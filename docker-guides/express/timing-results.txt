@@ -1,0 +1,23 @@
+time docker build -t express-app:v1 .
+real    0m6.301s
+user    0m0.262s
+sys     0m0.128s
+
+echo "// test comment" >> server.js
+
+time docker build -t express-app:v1 .
+real    0m6.333s
+user    0m0.268s
+sys     0m0.131s
+
+time docker build -f Dockerfile.v2 -t express-app:v2 .
+
+real    0m6.919s
+user    0m0.260s
+sys     0m0.132s
+echeadle@pop-os:~/P
+echo "// another test" >> server.js
+
+real    0m3.071s
+user    0m0.332s
+sys     0m0.132s

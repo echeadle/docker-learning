@@ -1,0 +1,42 @@
+# .dockerignore for Express project
+
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+.npm
+
+# Git
+.git
+.gitignore
+
+# Documentation
+README.md
+*.md
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Testing (if you add tests later)
+coverage/
+.nyc_output/
+
+# Logs
+logs/
+*.log
+
+# My Excluded Files
+*.txt
+
