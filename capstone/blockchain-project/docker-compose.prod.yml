@@ -1,0 +1,188 @@
+# Production Configuration for Blockchain Network
+# 
+# IMPORTANT: Before deploying to production:
+# 1. Build and push images to a registry (see PRODUCTION-DEPLOYMENT.md)
+# 2. Create secrets directory with required files
+# 3. Configure environment variables in .env.production
+# 4. Review and adjust resource limits for your infrastructure
+#
+# Deploy with:
+#   docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+
+version: '3.8'
+
+services:
+  node1:
+    # Use specific image tag from registry instead of building
+    image: ${DOCKER_REGISTRY}/blockchain-node:${VERSION:-1.0.0}
+    # Remove container_name to allow scaling if needed
+    # container_name: blockchain-node-1
+    
+    # Production ports - no host exposure for internal nodes
+    ports:
+      - "5001:5000"
+    
+    environment:
+      - NODE_PORT=5000
+      - PEER_NODES=node2:5000,node3:5000
+      - LOG_LEVEL=warning              # Reduce logging verbosity
+      - PYTHONUNBUFFERED=1             # Ensure logs flush immediately
+    
+    networks:
+      - blockchain-net
+    
+    # Production restart policy
+    restart: unless-stopped
+    
+    # Enhanced health check for production
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+    
+    # Resource limits to prevent runaway processes
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'          # Maximum 1 CPU core
+          memory: 1G           # Maximum 1GB RAM
+        reservations:
+          cpus: '0.5'          # Guaranteed 0.5 CPU
+          memory: 512M         # Guaranteed 512MB RAM
+    
+    # Production logging with rotation
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+        labels: "service,environment"
+    
+    # Security hardening
+    security_opt:
+      - no-new-privileges:true
+    
+    # Read-only root filesystem (uncomment if application supports it)
+    # read_only: true
+    # tmpfs:
+    #   - /tmp
+
+  node2:
+    image: ${DOCKER_REGISTRY}/blockchain-node:${VERSION:-1.0.0}
+    
+    ports:
+      - "5002:5000"
+    
+    environment:
+      - NODE_PORT=5000
+      - PEER_NODES=node1:5000,node3:5000
+      - LOG_LEVEL=warning
+      - PYTHONUNBUFFERED=1
+    
+    networks:
+      - blockchain-net
+    
+    # Wait for node1 to be healthy before starting
+    depends_on:
+      node1:
+        condition: service_healthy
+        restart: true                  # Restart node2 if node1 restarts
+    
+    restart: unless-stopped
+    
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+    
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+    
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    
+    security_opt:
+      - no-new-privileges:true
+
+  node3:
+    image: ${DOCKER_REGISTRY}/blockchain-node:${VERSION:-1.0.0}
+    
+    ports:
+      - "5003:5000"
+    
+    environment:
+      - NODE_PORT=5000
+      - PEER_NODES=node1:5000,node2:5000
+      - LOG_LEVEL=warning
+      - PYTHONUNBUFFERED=1
+    
+    networks:
+      - blockchain-net
+    
+    depends_on:
+      node1:
+        condition: service_healthy
+        restart: true
+      node2:
+        condition: service_healthy
+        restart: true
+    
+    restart: unless-stopped
+    
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+    
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+    
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    
+    security_opt:
+      - no-new-privileges:true
+
+networks:
+  blockchain-net:
+    driver: bridge
+    name: blockchain-network-prod
+    # Network security options
+    driver_opts:
+      com.docker.network.bridge.name: br-blockchain-prod
+      com.docker.network.bridge.enable_ip_masquerade: "true"
+      com.docker.network.bridge.enable_icc: "true"
+
+# Optional: Add persistent volumes for production
+# Uncomment to enable blockchain data persistence
+# volumes:
+#   node1-data:
+#     driver: local
+#   node2-data:
+#     driver: local
+#   node3-data:
+#     driver: local

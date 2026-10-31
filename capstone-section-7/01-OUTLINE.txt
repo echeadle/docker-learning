@@ -1,0 +1,135 @@
+Module Code Repository and Outline
+
+Module Code Repository and Outline
+
+Before diving into the module, it's helpful to know where you can find all the code we'll be working with. The complete project for this module is available on GitHub:
+
+
+Repository
+
+https://github.com/15Dkatz/python-blockchain-tutorial
+
+This repository contains the fully functional Python blockchain backend and React frontend that we'll be containerizing throughout this module. Feel free to explore the code, star the repository, and reference it anytime you need clarity on the application structure.
+
+
+Also, keep this link handy. This repository contains the completed code that you'll have by the end of this module:
+
+https://github.com/15Dkatz/docker-python-react-blockchain-tutorial
+
+
+Module Overview
+
+This module takes you on a journey from a standalone Python and React application to a fully containerized, scalable distributed system running with Docker and Docker Compose. Each lesson builds progressively on the previous one, ensuring you develop both the practical skills and conceptual understanding needed to deploy real-world applications.
+
+
+What You'll Build
+
+By the end of this module, you'll have created a production-ready containerized blockchain application that demonstrates:
+
+    Containerization best practices for Python and React applications
+
+    Multi-service orchestration using Docker Compose
+
+    Distributed system deployment with multiple synchronized nodes
+
+    Environment-based configuration following twelve-factor app methodology
+
+    Horizontal scaling with a single command
+
+
+Module Outline
+
+Video 1: Module Overview
+
+Get introduced to the module's goals and see a demonstration of the final system you'll build. Understand why containerizing distributed applications matters and how this project prepares you for real-world software engineering.
+
+Video 2: Cloning the Python Blockchain Tutorial Project
+
+Clone the existing Python blockchain application from GitHub. Learn how to work with an existing codebase—just like you're joining a development team—and understand the project structure.
+
+Video 3: Containerizing the Python Backend
+
+Write your first Dockerfile for the Python backend. Learn how to create a Docker image that packages Python, installs dependencies, and runs your Flask application. Get your first blockchain node running in a container.
+
+Video 4: Environment Variables and Configuration
+
+Implement proper environment variable handling and security practices. Configure PubNub credentials for peer-to-peer networking, follow twelve-factor app principles, and keep secrets out of your Docker images.
+
+Video 5: Docker Compose for Multiple Nodes
+
+Move from single containers to orchestrated services. Write a `docker-compose.yml` file that runs multiple blockchain nodes simultaneously, enabling peer-to-peer communication and distributed consensus.
+
+Video 6: Backend Seed Node Configuration
+
+Implement Docker Compose profiles to create optional services. Set up a seed node with pre-populated blockchain data that peer nodes can synchronize from, demonstrating advanced orchestration patterns.
+
+Video 7: Containerizing the React Frontend
+
+Write a multi-stage Dockerfile for the React frontend. Learn production optimization techniques by building a static React application and serving it with nginx, reducing image size from over a gigabyte to under 50 megabytes.
+
+Video 8: Frontend Integration with Docker Compose
+
+Bring the frontend and backend together in a unified Docker Compose configuration. Create a full-stack application where the React UI communicates with the blockchain backend, all orchestrated through Docker.
+
+Video 9: Scaling with Docker Compose
+
+Learn horizontal scaling by running multiple blockchain peer nodes with a single command. Watch as five or more nodes synchronize transactions and blocks in real-time, demonstrating the power of containerized distributed systems.
+
+Video 10: Conclusion and Next Steps
+
+Reflect on what you've accomplished and explore ways to extend the project. Learn about production considerations, CI/CD pipelines, Kubernetes deployment, and how the skills you've gained apply to real-world software engineering.
+
+
+Learning Approach
+
+This module emphasizes progressive complexity. We start simple—one container, one service—and build methodically toward a sophisticated multi-container distributed system. Each video delivers a complete, testable milestone. You'll see results immediately, building your confidence and understanding step by step.
+
+The skills you develop here aren't specific to blockchains. They apply to any distributed system: microservices architectures, real-time applications, data pipelines, or cloud-native platforms. Companies like Netflix, Uber, Spotify, and Airbnb use these exact patterns to deploy their production systems.
+
+
+What Makes This Module Special
+
+In this module, you're working with a real, production-quality application with a Python backend, React frontend, peer-to-peer networking, and distributed consensus. This mirrors professional software development. When you join a company, you don't build from scratch—you take existing codebases and make them deployable, scalable, and production-ready. That's exactly what you're doing here.
+
+
+Ready to Begin?
+
+The skills you're about to learn will serve you throughout your career in software engineering, DevOps, or platform engineering. Take your time with each video. Test at every step. Build confidence through small wins. And remember: by the end of this module, you'll be able to deploy distributed systems that synchronize across multiple nodes—skills that directly translate to professional environments.
+
+Let's get started. The journey begins with cloning the project in the next video!
+
+Play
+43. Module Overview - Containerizing a Distributed Blockchain Network
+7min
+Start
+44. Module Code Repository and Outline
+3min
+Play
+45. Cloning the Python Blockchain Tutorial Project
+6min
+Play
+46. Containerizing the Python Backend
+17min
+Play
+47. Environment Variables and Configuration
+13min
+Play
+48. Docker Compose - Running Multiple Blockchain Nodes
+20min
+Play
+49. Backend Seed Node with Docker Compose Profiles
+18min
+Play
+50. Containerizing the React Frontend
+19min
+Play
+51. Adding the Frontend to Docker Compose
+11min
+Play
+52. Scaling with Docker Compose
+18min
+Play
+53. Module Conclusion and Next Steps
+
+    8min
+

@@ -1,0 +1,78 @@
+version: '3.8'
+
+services:
+  # Blockchain Node 1 (Bootstrap node)
+  node1:
+    build: .
+    container_name: blockchain-node-1
+    ports:
+      - "5001:5000"
+    environment:
+      - NODE_PORT=5000
+      - PEER_NODES=node2:5000,node3:5000
+    networks:
+      - blockchain-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+
+  # Blockchain Node 2
+  node2:
+    build: .
+    container_name: blockchain-node-2
+    ports:
+      - "5002:5000"
+    environment:
+      - NODE_PORT=5000
+      - PEER_NODES=node1:5000,node3:5000
+    networks:
+      - blockchain-net
+    depends_on:
+      node1:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+
+  # Blockchain Node 3
+  node3:
+    build: .
+    container_name: blockchain-node-3
+    ports:
+      - "5003:5000"
+    environment:
+      - NODE_PORT=5000
+      - PEER_NODES=node1:5000,node2:5000
+    networks:
+      - blockchain-net
+    depends_on:
+      node1:
+        condition: service_healthy
+      node2:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+
+networks:
+  blockchain-net:
+    driver: bridge
+    name: blockchain-network
+
+# Optional: Add volumes for persistent blockchain data
+# volumes:
+#   node1-data:
+#   node2-data:
+#   node3-data:

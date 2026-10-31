@@ -35,3 +35,4 @@ dist/
 # Ignore personal notes you don't want to commit
 personal-notes.md
 scratch/
+*.zip
