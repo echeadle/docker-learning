@@ -9,7 +9,7 @@ This repository contains my personal notes, cheat sheets, and examples as I lear
 ## Course Progress
 
 - [x] Basic container lifecycle commands
-- [ ] Dockerfile basics
+- [x] Dockerfile basics
 - [ ] Docker Compose
 - [ ] Networking
 - [ ] Volumes and data persistence
@@ -75,4 +75,4 @@ This documentation will eventually serve as reference material for:
 ---
 
 **Started:** October 30, 2025  
-**Status:** In Progress - Basic Commands Phase
+**Status:** Paused (Nov 2026) — not finished. Notes for 01–02 are complete; 03–06 are stubs. Course exercises live in `docker-guides/` and the capstone in `capstone/`.
