@@ -32,7 +32,11 @@ docker-learning/
 
 ## Learning Resources
 
-- **Primary Course:** [Your Udemy Course Name]
+- **Primary Course:** *Docker - Containers, Images, Compose, Kubernetes, and more!* (Udemy, David Katz)
+  - Instructor code: [15Dkatz/docker-guides](https://github.com/15Dkatz/docker-guides) — the exercises in `docker-guides/` follow this repo
+  - Section 7 capstone source: [15Dkatz/python-blockchain-tutorial](https://github.com/15Dkatz/python-blockchain-tutorial) (Python blockchain + React frontend); finished version: [15Dkatz/docker-python-react-blockchain-tutorial](https://github.com/15Dkatz/docker-python-react-blockchain-tutorial)
+- **Study aid:** Claude (claude.ai chat) — generated most of the `.md` guides in `01-`/`02-` and everything in `capstone/`
+  - ⚠️ `capstone/` is **not** the course's Section 7 capstone. It's a separate Flask blockchain Claude wrote, under the mistaken idea that I was authoring a course. The real Section 7 work is in `capstone-section-7/01-OUTLINE.txt`.
 - **Additional Resources:**
   - [Docker Official Documentation](https://docs.docker.com/)
   - [Docker Security Best Practices](https://docs.docker.com/engine/security/)
